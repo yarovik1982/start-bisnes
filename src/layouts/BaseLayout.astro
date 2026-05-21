@@ -11,6 +11,7 @@ import { ClientRouter } from 'astro:transitions';
 import '../styles/global.css';
 import { brand } from '../config/brand';
 import { client } from '../data/client';
+import BannerCookies from '../components/BannerCookies.astro';
 
 interface Props {
   title?: string;
@@ -96,5 +97,6 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site ?? brand.url);
     </main>
 
     <slot name="footer" />
+    <BannerCookies />
   </body>
 </html>

@@ -14,4 +14,21 @@ const blog = defineCollection({
   }),
 });
 
-export const collections = { blog };
+const privacy = defineCollection({
+  loader: glob({ pattern: '**/[^_]*.md', base: './src/content/privacy' }),
+  schema: z.object({
+    title: z.string(),
+    description: z.string(),
+    date: z.coerce.date().optional(),
+  }),
+});
+
+const terms = defineCollection({
+  loader: glob({ pattern: '**/[^_]*.md', base: './src/content/terms' }),
+  schema: z.object({
+    title: z.string(),
+    date: z.coerce.date().optional(),
+    description: z.string(),
+  }),
+});
+export const collections = { blog, privacy, terms };

@@ -1,0 +1,99 @@
+---
+const cookieName = 'cookie_consent';
+const cookieMaxAgeDays = 180;
+---
+
+<section
+  id="cookie-banner"
+  class="fixed inset-x-0 bottom-0 z-99999 hidden"
+  role="dialog"
+  aria-live="polite"
+  aria-label="Cookie consent"
+>
+  <div class="mx-auto max-w-site px-4 sm:px-6 pb-4">
+    <div class="rounded-lg border border-border bg-background/95 backdrop-blur shadow-lg">
+      <div class="flex flex-col gap-3 p-4 sm:flex-row sm:items-center sm:justify-between sm:gap-6">
+        <div class="text-sm text-text-muted leading-relaxed">
+          <p class="text-text font-semibold">
+            Мы используем cookie
+          </p>
+          <p>
+            Они помогают сайту работать корректно и улучшают ваш опыт.
+            Подробнее — в <a class="text-primary hover:text-primary-light underline underline-offset-2" href="/privacy">политике конфиденциальности</a>.
+          </p>
+        </div>
+
+        <div class="flex flex-col gap-2 sm:flex-row sm:items-center sm:shrink-0">
+          <button
+            type="button"
+            data-cookie-decline
+            class="inline-flex items-center justify-center rounded-md border border-border bg-surface px-4 py-2 text-sm font-semibold text-text transition-colors hover:bg-background"
+          >
+            Отклонить
+          </button>
+          <button
+            type="button"
+            data-cookie-accept
+            class="inline-flex items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-semibold text-primary-fg transition-colors hover:bg-primary-light"
+          >
+            Принять
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script is:inline define:vars={{ cookieName, cookieMaxAgeDays }}>
+  (function () {
+    function getCookie(name) {
+      var m = document.cookie.match('(?:^|; )' + name.replace(/([.$?*|{}()[\]\\/+^])/g, '\\$1') + '=([^;]*)');
+      return m ? decodeURIComponent(m[1]) : null;
+    }
+
+    function setCookie(name, value, days) {
+      var maxAge = days * 24 * 60 * 60;
+      document.cookie = name + '=' + encodeURIComponent(value) + '; Path=/; Max-Age=' + maxAge + '; SameSite=Lax';
+    }
+
+    function initCookieBanner() {
+      var banner = document.getElementById('cookie-banner');
+      if (!banner) return;
+
+      if (getCookie(cookieName) === 'accepted') {
+        banner.classList.add('hidden');
+        return;
+      }
+
+      banner.classList.remove('hidden');
+
+      if (banner.dataset.cookieInitialized === '1') return;
+      banner.dataset.cookieInitialized = '1';
+
+      var acceptBtn = banner.querySelector('[data-cookie-accept]');
+      var declineBtn = banner.querySelector('[data-cookie-decline]');
+
+      function hide() {
+        banner.classList.add('hidden');
+      }
+
+      if (acceptBtn) {
+        acceptBtn.addEventListener('click', function () {
+          setCookie(cookieName, 'accepted', cookieMaxAgeDays);
+          hide();
+        });
+      }
+
+      if (declineBtn) {
+        declineBtn.addEventListener('click', function () {
+          hide();
+        });
+      }
+    }
+
+    initCookieBanner();
+
+    document.addEventListener('astro:after-swap', initCookieBanner);
+    document.addEventListener('astro:page-load', initCookieBanner);
+  })();
+</script>

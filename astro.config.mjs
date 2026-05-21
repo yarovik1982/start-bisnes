@@ -1,13 +1,14 @@
 // @ts-check
 import { defineConfig, fontProviders } from 'astro/config';
-import tailwindcss from '@tailwindcss/vite';
+import tailwindcss from '@tailwindcss/postcss';
 import sitemap from '@astrojs/sitemap';
 import robotsTxt from 'astro-robots-txt';
 
-export default defineConfig({
-  site: 'https://www.example.com',
-  output: 'static',
+const site = process.env.URL ?? process.env.DEPLOY_URL ?? 'https://www.example.com';
 
+export default defineConfig({
+  output: 'static',
+  site,
   integrations: [sitemap(), robotsTxt()],
 
   fonts: [
@@ -35,7 +36,11 @@ export default defineConfig({
   },
 
   vite: {
-    plugins: [tailwindcss()],
+    css: {
+      postcss: {
+        plugins: [tailwindcss()],
+      },
+    },
     build: {
       cssMinify: 'lightningcss',
     },

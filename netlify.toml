@@ -5,6 +5,18 @@
 [build.environment]
   NODE_VERSION = "22"
 
+[[redirects]]
+  from = "/start-bisnes"
+  to = "/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/start-bisnes/*"
+  to = "/:splat"
+  status = 301
+  force = true
+
 # Security headers
 [[headers]]
   for = "/*"

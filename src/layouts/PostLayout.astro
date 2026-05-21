@@ -13,7 +13,7 @@ interface Props {
 
 const { title, description, date, author = 'Team' } = Astro.props;
 
-const formattedDate = date.toLocaleDateString('en-US', {
+const formattedDate = date.toLocaleDateString('ru-RU', {
   year: 'numeric',
   month: 'long',
   day: 'numeric',
@@ -68,7 +68,7 @@ const formattedDate = date.toLocaleDateString('en-US', {
           <svg class="size-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16l-4-4m0 0l4-4m-4 4h18" />
           </svg>
-          Back to Blog
+          Назад к статьям
         </a>
       </div>
     </div>
